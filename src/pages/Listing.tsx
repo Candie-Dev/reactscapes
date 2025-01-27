@@ -3,26 +3,31 @@ import DiscountHeader from "../components/DiscountHeader";
 import Header from "../components/Header";
 import Container from "../components/Container";
 import Sidebar from "../components/Sidebar";
-import Tees from '../components/TeesData';
 import Filter from "../components/Filter";
 import Properties from "../components/Properties";
 import CountSort from "../components/CountSort";
 import TestDropdown from "../components/TestDropdown";
-
+import TeesList from '../components/TeesList';
 import TeesData from "../components/TeesData";  // Import Tees data
+import Pagination from "../components/PaginationComponent"; // Pagination Component
+import Newsletter from '../components/Newsletter';
+import Footer from '../components/Footer';
 
 const Listing: React.FC = () => {
-  const totalItems = TeesData.length; // Get the total number of items in TeesData
   const itemsPerPage = 10; // Number of items per page
   const [currentPage, setCurrentPage] = useState<number>(1);
+
+  // Calculate the total number of items
+  const totalItems = TeesData.length; 
 
   // Calculate the paginated data based on the current page
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedData = TeesData.slice(startIndex, endIndex); // Get the paginated data
+  const paginatedData = TeesData.slice(startIndex, endIndex); // Get the data for the current page
 
+  // Handle page change
   const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber); // Update currentPage when page changes
+    setCurrentPage(pageNumber); // Set current page when user clicks page number
   };
 
   return (
@@ -45,10 +50,20 @@ const Listing: React.FC = () => {
             <TestDropdown />
           </div>
 
-       
+          {/* Pass the paginated data to Tees component */}
+          <TeesList data={paginatedData} />
+
+          {/* Pagination controls */}
+          <Pagination
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            currentPage={currentPage}
+            onPageChange={handlePageChange}
           />
         </div>
       </div>
+     <div className='mt-10'><Newsletter /></div>
+     <Footer />
     </div>
   );
 };
